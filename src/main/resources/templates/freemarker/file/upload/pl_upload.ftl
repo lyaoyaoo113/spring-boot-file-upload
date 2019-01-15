@@ -4,12 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-    <script type="text/javascript" src="${ctx!''}/resource/plugins/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="${ctx!''}/resource/plugins/plupload/3.1.2/plupload.full.min.js"></script>
     <!--[if lte IE 9]>
-    <script type="text/javascript" src="${ctx!''}/resource/plugins/html5shiv/r29/html5.min.js"></script>
+    <script type="text/javascript" src="${ctx!''}/resource/plugins/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
     <script type="text/javascript" src="${ctx!''}/resource/plugins/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!--[if IE 9]>
+	<script type="text/javascript" src="${ctx!''}/resource/plugins/css3pie/2.1.0-beta/PIE_IE9.js"></script>
+    <![endif]-->
+    <!--[if lt IE 9]>
+	<script type="text/javascript" src="${ctx!''}/resource/plugins/css3pie/2.1.0-beta/PIE_IE678.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="${ctx!''}/resource/plugins/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="${ctx!''}/resource/plugins/plupload/3.1.2/plupload.full.min.js"></script>
 </head>
 
 <body>

@@ -25,7 +25,7 @@ public class FileUploadController {
 	public String index(HttpServletRequest request) {
 
 		request.setAttribute("ctx", request.getContextPath());
-		return "pl_upload";
+		return "file/upload/pl_upload";
 	}
 
 	@RequestMapping("/savePersistentFiles")
