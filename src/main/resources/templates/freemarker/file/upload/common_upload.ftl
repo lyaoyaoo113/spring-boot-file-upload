@@ -35,7 +35,7 @@
         silverlight_xap_url: '${ctx!""}/resource/plugins/plupload/3.1.2/Moxie.xap',
 
         filters: {
-            max_file_size: '10mb',
+            max_file_size: '20mb',
             mime_types: [
                 { title: 'Image files', extensions: 'jpg,jpeg,gif,png' }
             ]
@@ -56,13 +56,12 @@
 
                     var fileType = file.type;
                     if (fileType.indexOf('/gif') > -1) {
-                        var reader = new moxie.file.FileReader();
-                        console.log(reader);
-                        reader.onload = function(event) {
+                        var fileReader = new moxie.file.FileReader();
+                        fileReader.onload = function(event) {
                             var imageHtml = '<img src="' + this.result + '">';
                             $('#images').append(imageHtml);
                         }
-                        reader.readAsDataURL(file.getSource());
+                        fileReader.readAsDataURL(file.getSource());
                     } else if (fileType.indexOf('/jpeg') > -1 || fileType.indexOf('/png') > -1) {
                         var imageReader = new moxie.image.Image();
                         imageReader.onload = function(event) {

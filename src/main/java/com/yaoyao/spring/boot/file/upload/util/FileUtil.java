@@ -16,20 +16,24 @@ import com.alibaba.fastjson.JSONObject;
 
 @Component
 public class FileUtil {
+
 	/**
 	 * 存储文件
 	 * 
 	 * @param uploadFiles
 	 * 上传文件
 	 * @param contextPath
-	 * 项目路径
+	 * 文件资源上下文路径
+	 * @param savePathPrefixName
+	 * 文件保存路径前缀名
+	 * @param networkPathPrefixName
+	 * 文件网络路径前缀名
 	 * @return
 	 */
-	public JSONArray storageFiles(List<MultipartFile> uploadFiles, String contextPath) {
+	public JSONArray storageFiles(List<MultipartFile> uploadFiles, String contextPath, String savePathPrefixName, String networkPathPrefixName) {
 		if (uploadFiles == null) {
 			return null;
 		}
-
 		Configuration configuration = null;
 		try {
 			configuration = new PropertiesConfiguration("myconfig.properties");
@@ -39,9 +43,9 @@ public class FileUtil {
 		// 文件信息数组
 		JSONArray fileInfos = new JSONArray();
 		// 获取文件保存路径前缀
-		String fileSavePathPrefix = configuration.getString("fileSavePathPrefix");
+		String fileSavePathPrefix = configuration.getString(savePathPrefixName);
 		// 获取文件网络路径前缀
-		String filePathPrefix = configuration.getString("filePathPrefix");
+		String fileNetworkPathPrefix = configuration.getString(networkPathPrefixName);
 		for (int i = 0, len = uploadFiles.size(); i < len; i++) {
 			JSONObject fileInfo = new JSONObject();
 			// 获取上传文件
@@ -49,8 +53,9 @@ public class FileUtil {
 			// 生成文件目录
 			String datePath = "/" + DateUtil.getDate("yyyy/MM/dd");
 			String fileName = "/" + MyUtil.getUUID() + "_" + uploadFile.getOriginalFilename();
-			String filePath = fileSavePathPrefix + datePath + fileName;
-			File file = new File(filePath);
+			String fileSavePath = fileSavePathPrefix + datePath + fileName;
+			fileSavePath = fileSavePath.replace("/", File.separator);
+			File file = new File(fileSavePath);
 			// 创建文件目录
 			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
@@ -64,9 +69,10 @@ public class FileUtil {
 				e.printStackTrace();
 			}
 			// 生成文件信息
-			fileInfo.put("filePath", (contextPath + filePathPrefix + datePath + fileName).replace("\\", "/"));
 			fileInfo.put("fileName", uploadFile.getOriginalFilename());
 			fileInfo.put("fileType", getFileContentType(file));
+			fileInfo.put("fileRealPath", fileSavePath);
+			fileInfo.put("filePath", (contextPath + fileNetworkPathPrefix + datePath + fileName).replace("\\", "/"));
 			// 添加文件信息
 			fileInfos.add(fileInfo);
 		}
