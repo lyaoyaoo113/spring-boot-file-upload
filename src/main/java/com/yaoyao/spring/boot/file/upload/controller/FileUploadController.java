@@ -22,6 +22,13 @@ public class FileUploadController {
 	@Autowired
 	private FileUploadService fileUploadService;
 
+	/**
+	 * 首页
+	 * 
+	 * @param request
+	 * @param source
+	 * @return
+	 */
 	@RequestMapping("")
 	public String index(HttpServletRequest request, String source) {
 		request.setAttribute("ctx", request.getContextPath());

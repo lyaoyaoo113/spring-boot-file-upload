@@ -16,6 +16,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.yaoyao.spring.boot.file.upload.util.FileUtil;
 import com.yaoyao.spring.boot.file.upload.util.MyUtil;
 
+/**
+ * 文件上传Service
+ * 
+ * @author yaoyao
+ */
 @Service
 public class FileUploadService {
 
@@ -64,6 +69,7 @@ public class FileUploadService {
 		JSONArray fileInfos = new JSONArray();
 		// 存储文件
 		fileInfos = fileUtil.storageFiles(uploadFiles, contextPath, savePathPrefixName, networkPathPrefixName);
+		// 保存文件信息
 		if (fileInfos != null && !fileInfos.isEmpty()) {
 			List<Object> paras = new ArrayList<>();
 			String sql = "insert into t_import_excel_file (id, filename, filetype, filerealpath, filepath, createtime) values (?, ?, ?, ?, ?, ?)";
@@ -77,6 +83,13 @@ public class FileUploadService {
 				paras.add(fileInfo.getString("filePath"));
 				paras.add(new Date());
 				jdbcTemplate.update(sql, paras.toArray());
+			}
+		}
+		// 去除文件真实路径信息
+		if (fileInfos != null && !fileInfos.isEmpty()) {
+			for (int i = 0, len = fileInfos.size(); i < len; i++) {
+				JSONObject fileInfo = fileInfos.getJSONObject(i);
+				fileInfo.remove("fileRealPath");
 			}
 		}
 		return fileInfos;

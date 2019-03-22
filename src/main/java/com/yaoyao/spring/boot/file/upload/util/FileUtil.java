@@ -52,7 +52,8 @@ public class FileUtil {
 			MultipartFile uploadFile = uploadFiles.get(i);
 			// 生成文件目录
 			String datePath = "/" + DateUtil.getDate("yyyy/MM/dd");
-			String fileName = "/" + MyUtil.getUUID() + "_" + uploadFile.getOriginalFilename();
+			String fileSuffix = this.getFileSuffix(uploadFile.getOriginalFilename());
+			String fileName = "/" + MyUtil.getUUID() + fileSuffix;
 			String fileSavePath = fileSavePathPrefix + datePath + fileName;
 			fileSavePath = fileSavePath.replace("/", File.separator);
 			File file = new File(fileSavePath);
@@ -70,7 +71,7 @@ public class FileUtil {
 			}
 			// 生成文件信息
 			fileInfo.put("fileName", uploadFile.getOriginalFilename());
-			fileInfo.put("fileType", getFileContentType(file));
+			fileInfo.put("fileType", this.getFileContentType(file));
 			fileInfo.put("fileRealPath", fileSavePath);
 			fileInfo.put("filePath", (contextPath + fileNetworkPathPrefix + datePath + fileName).replace("\\", "/"));
 			// 添加文件信息
@@ -93,5 +94,16 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * 获取文件后缀
+	 * 
+	 * @param fileName
+	 * 文件名称
+	 * @return
+	 */
+	public String getFileSuffix(String fileName) {
+		return fileName.substring(fileName.indexOf("."));
 	}
 }
